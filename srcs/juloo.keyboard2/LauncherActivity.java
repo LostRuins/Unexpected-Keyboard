@@ -2,6 +2,8 @@ package juloo.keyboard2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,6 +28,34 @@ public class LauncherActivity extends Activity
     if (VERSION.SDK_INT > 28)
       _tryhere_area.addOnUnhandledKeyEventListener(
           this.new Tryhere_OnUnhandledKeyEventListener());
+
+    handleDrawOverlay();
+  }
+
+  private void handleDrawOverlay() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+      // If not, request the permission
+      requestOverlayPermission();
+    } else {
+      // Permission already granted
+      startOverlayService();
+    }
+  }
+
+  private static final int REQUEST_CODE_OVERLAY_PERMISSION = 1601;
+  private void requestOverlayPermission() {
+    // Request the permission using an Intent
+    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+    startActivityForResult(intent, REQUEST_CODE_OVERLAY_PERMISSION);
+  }
+
+  private void startOverlayService() {
+    Intent intent = new Intent(this, OverlayService.class);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      startForegroundService(intent);
+    } else {
+      startService(intent);
+    }
   }
 
   public void launch_imesettings(View _btn)
