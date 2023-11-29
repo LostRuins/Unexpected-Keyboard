@@ -11,6 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LauncherActivity extends Activity
 {
   /** Text is replaced when receiving key events. */
@@ -39,6 +42,14 @@ public class LauncherActivity extends Activity
     InputMethodManager inputMethodManager =
             (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        finish();
+      }
+    }, 200);
+
   }
 
   final class Tryhere_OnUnhandledKeyEventListener implements View.OnUnhandledKeyEventListener
