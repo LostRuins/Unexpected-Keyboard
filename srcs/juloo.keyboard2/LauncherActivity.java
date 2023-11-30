@@ -37,9 +37,6 @@ public class LauncherActivity extends Activity
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
       // If not, request the permission
       requestOverlayPermission();
-    } else {
-      // Permission already granted
-      startOverlayService();
     }
   }
 
@@ -50,13 +47,9 @@ public class LauncherActivity extends Activity
     startActivityForResult(intent, REQUEST_CODE_OVERLAY_PERMISSION);
   }
 
-  private void startOverlayService() {
-    Intent intent = new Intent(this, OverlayService.class);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      startForegroundService(intent);
-    } else {
-      startService(intent);
-    }
+  public void startOverlayService(View _btn) {
+    startService(new Intent(this, OverlayService.class));
+    finish();
   }
 
   @Override
@@ -67,7 +60,6 @@ public class LauncherActivity extends Activity
       // Check if the permission was granted
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
         Toast.makeText(this, "Overlay permission are granted", Toast.LENGTH_SHORT).show();
-        startOverlayService();
       } else {
         Toast.makeText(this, "Overlay permission not granted", Toast.LENGTH_SHORT).show();
       }
