@@ -1,9 +1,18 @@
 <!-- overlay_button.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content" android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <Button xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/invokeKeyboardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Invoke Keyboard" />
-    <EditText android:id="@+id/dummyEditText" style="@style/paragraph" android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/dummyEditText"
+        style="@style/paragraph"
+        android:layout_width="115dp"
+        android:inputType="text" />
 </LinearLayout>

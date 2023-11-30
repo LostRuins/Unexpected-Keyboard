@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class OverlayService extends Service {
 
@@ -58,24 +59,14 @@ public class OverlayService extends Service {
         overlayView = LayoutInflater.from(this).inflate(R.layout.overlay_button, null);
 
         // Set up the layout parameters for the overlay button
-        WindowManager.LayoutParams params;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            params = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT
-            );
-        } else {
-            params = new WindowManager.LayoutParams(
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.WRAP_CONTENT,
-                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                    PixelFormat.TRANSLUCENT
-            );
-        }
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT,
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                        ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                        : WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT);
 
         params.gravity = Gravity.TOP | Gravity.START;
         params.x = 10;
@@ -86,31 +77,33 @@ public class OverlayService extends Service {
         windowManager.addView(overlayView, params);
 
         // Set up click listener for the overlay button
-        Button button = overlayView.findViewById(R.id.invokeKeyboardButton);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                EditText editText = new EditText(getApplicationContext());
-//                editText.setVisibility(View.GONE);
+//        Button button = overlayView.findViewById(R.id.invokeKeyboardButton);
 //
-//                // Add the EditText to the window to allow focus
-//                windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-//                windowManager.addView(editText, new WindowManager.LayoutParams());
-
-                             // Show the soft keyboard
-                EditText yourEditText= (EditText) overlayView.findViewById(R.id.dummyEditText);
-//                yourEditText.requestFocus();
-//                yourEditText.setText("hello");
-                InputMethodManager inputMethodManager =
-                        (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-
-
-                // Remove the EditText from the window after use
-//                windowManager.removeView(editText);
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                EditText editText = new EditText(getApplicationContext());
+////                editText.setVisibility(View.GONE);
+////
+////                // Add the EditText to the window to allow focus
+////                windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+////                windowManager.addView(editText, new WindowManager.LayoutParams());
+//
+//                Toast.makeText(OverlayService.this, "Button Clicked!", Toast.LENGTH_SHORT).show();
+////
+////                             // Show the soft keyboard
+////                EditText yourEditText= (EditText) overlayView.findViewById(R.id.dummyEditText);
+//////                yourEditText.requestFocus();
+//////                yourEditText.setText("hello");
+//                InputMethodManager inputMethodManager =
+//                        (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//
+//
+//                // Remove the EditText from the window after use
+////                windowManager.removeView(editText);
+//            }
+//        });
     }
 
     private void createNotificationChannel() {

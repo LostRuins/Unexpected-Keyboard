@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LauncherActivity extends Activity
 {
@@ -55,6 +56,21 @@ public class LauncherActivity extends Activity
       startForegroundService(intent);
     } else {
       startService(intent);
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
+      // Check if the permission was granted
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+        Toast.makeText(this, "Overlay permission are granted", Toast.LENGTH_SHORT).show();
+        startOverlayService();
+      } else {
+        Toast.makeText(this, "Overlay permission not granted", Toast.LENGTH_SHORT).show();
+      }
     }
   }
 
