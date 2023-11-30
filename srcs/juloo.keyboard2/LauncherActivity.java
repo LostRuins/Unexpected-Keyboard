@@ -30,14 +30,6 @@ public class LauncherActivity extends Activity
       _tryhere_area.addOnUnhandledKeyEventListener(
           this.new Tryhere_OnUnhandledKeyEventListener());
 
-    handleDrawOverlay();
-  }
-
-  private void handleDrawOverlay() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-      // If not, request the permission
-      requestOverlayPermission();
-    }
   }
 
   private static final int REQUEST_CODE_OVERLAY_PERMISSION = 1601;
@@ -48,20 +40,26 @@ public class LauncherActivity extends Activity
   }
 
   public void startOverlayService(View _btn) {
-    startService(new Intent(this, OverlayService.class));
-    finish();
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+      // If not, request the permission
+      requestOverlayPermission();
+    } else {
+      startService(new Intent(this, OverlayService.class));
+    }
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
 
+    //handle response for overlay permission request
     if (requestCode == REQUEST_CODE_OVERLAY_PERMISSION) {
       // Check if the permission was granted
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
-        Toast.makeText(this, "Overlay permission are granted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Overlay permissions are granted. You can now launch persistent keyboards.", Toast.LENGTH_SHORT).show();
       } else {
-        Toast.makeText(this, "Overlay permission not granted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Overlay permissions are required for launching persistent keyboard.", Toast.LENGTH_SHORT).show();
       }
     }
   }

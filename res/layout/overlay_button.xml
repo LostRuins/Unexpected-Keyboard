@@ -2,17 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <Button xmlns:android="http://schemas.android.com/apk/res/android"
+    <Button
         android:id="@+id/invokeKeyboardButton"
-        android:layout_width="wrap_content"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
-        android:text="Invoke Keyboard" />
+        android:text="Show" />
 
-    <EditText
-        android:id="@+id/dummyEditText"
-        style="@style/paragraph"
-        android:layout_width="115dp"
-        android:inputType="text" />
+    <Button
+        android:id="@+id/closeOverlayButton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="#FF8282"
+        android:text="x" />
 </LinearLayout>
